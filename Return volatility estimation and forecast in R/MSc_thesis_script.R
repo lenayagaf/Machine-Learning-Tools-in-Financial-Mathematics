@@ -443,30 +443,26 @@ ggplot(df_volatility[l1:l2,], aes(x=index)) +
   theme(plot.title = element_text(size = 20)) +
   theme(axis.text=element_text(size=10)) + theme_classic() + theme(legend.text = element_text(size = 18))
 
+S_t_r <- as.numeric(model_return_robust$coefficients[1]) * data_dummy$D1 +
+  as.numeric(model_return_robust$coefficients[2]) * data_dummy$D2 +
+  as.numeric(model_return_robust$coefficients[3]) * data_dummy$D3 +
+  as.numeric(model_return_robust$coefficients[4]) * data_dummy$D4 +
+  as.numeric(model_return_robust$coefficients[5]) * data_dummy$D5 +
+  as.numeric(model_return_robust$coefficients[6]) * data_dummy$D6 +
+  as.numeric(model_return_robust$coefficients[7]) * data_dummy$D7 +
+  as.numeric(model_return_robust$coefficients[8]) * data_dummy$D8 +
+  as.numeric(model_return_robust$coefficients[9]) * data_dummy$D9 +
+  as.numeric(model_return_robust$coefficients[10]) * data_dummy$D10 +
+  as.numeric(model_return_robust$coefficients[11]) * data_dummy$D11 +
+  as.numeric(model_return_robust$coefficients[12]) * data_dummy$D12 +
+  as.numeric(model_return_robust$coefficients[13]) * data_dummy$D13 +
+  as.numeric(model_return_robust$coefficients[14]) * data_dummy$D14 +
+  as.numeric(model_return_robust$coefficients[15]) * data_dummy$D15 +
+  as.numeric(model_return_robust$coefficients[16]) * data_dummy$D16
+
 # Define number of predictions to make
-# Read the new data with deseasonalized and true volatility estimates 
-data_full<-fread("eur_gbp_data_with_volatility.csv")
-
-nobs <- dim(data_full)[1]
-
-S_t_r <- as.numeric(model_return_robust$coefficients[1]) * data_full$D1 +
-  as.numeric(model_return_robust$coefficients[2]) * data_full$D2 +
-  as.numeric(model_return_robust$coefficients[3]) * data_full$D3 +
-  as.numeric(model_return_robust$coefficients[4]) * data_full$D4 +
-  as.numeric(model_return_robust$coefficients[5]) * data_full$D5 +
-  as.numeric(model_return_robust$coefficients[6]) * data_full$D6 +
-  as.numeric(model_return_robust$coefficients[7]) * data_full$D7 +
-  as.numeric(model_return_robust$coefficients[8]) * data_full$D8 +
-  as.numeric(model_return_robust$coefficients[9]) * data_full$D9 +
-  as.numeric(model_return_robust$coefficients[10]) * data_full$D10 +
-  as.numeric(model_return_robust$coefficients[11]) * data_full$D11 +
-  as.numeric(model_return_robust$coefficients[12]) * data_full$D12 +
-  as.numeric(model_return_robust$coefficients[13]) * data_full$D13 +
-  as.numeric(model_return_robust$coefficients[14]) * data_full$D14 +
-  as.numeric(model_return_robust$coefficients[15]) * data_full$D15 +
-  as.numeric(model_return_robust$coefficients[16]) * data_full$D16
-
-ReturnDeseasonalized <- data_full$ReturnStandardized - S_t_r
+nobs <- dim(data_dummy)[1]
+ReturnDeseasonalized <- data_dummy$Return1 - S_t_r
 
 true_epsilon <- c(arima12$residuals, rep(NA, nobs - n_train))
 
@@ -474,18 +470,22 @@ for (i in (n_train+1):nobs) {
   true_epsilon[i] <- ReturnDeseasonalized[i] - arima12$coef["ar1"] * ReturnDeseasonalized[i-1] - arima12$coef["ar2"] * ReturnDeseasonalized[i-2] - arima12$coef["ma1"] * true_epsilon[i-1]
 }
 
-log_S_epsilon_squared <- as.numeric(model_volatility_robust$coefficients[1]) * data_full$D1 +
-  as.numeric(model_volatility_robust$coefficients[2]) * data_full$D2 +
-  as.numeric(model_volatility_robust$coefficients[3]) * data_full$D3 +
-  as.numeric(model_volatility_robust$coefficients[4]) * data_full$D4 +
-  as.numeric(model_volatility_robust$coefficients[5]) * data_full$D5 +
-  as.numeric(model_volatility_robust$coefficients[6]) * data_full$D6 +
-  as.numeric(model_volatility_robust$coefficients[7]) * data_full$D7 +
-  as.numeric(model_volatility_robust$coefficients[8]) * data_full$D8 +
-  as.numeric(model_volatility_robust$coefficients[9]) * data_full$D9 +
-  as.numeric(model_volatility_robust$coefficients[10]) * data_full$D10 +
-  as.numeric(model_volatility_robust$coefficients[11]) * data_full$D11 +
-  as.numeric(model_volatility_robust$coefficients[12]) * data_full$D12
+log_S_epsilon_squared <- as.numeric(model_volatility_robust$coefficients[1]) * data_dummy$D1 +
+  as.numeric(model_volatility_robust$coefficients[2]) * data_dummy$D2 +
+  as.numeric(model_volatility_robust$coefficients[3]) * data_dummy$D3 +
+  as.numeric(model_volatility_robust$coefficients[4]) * data_dummy$D4 +
+  as.numeric(model_volatility_robust$coefficients[5]) * data_dummy$D5 +
+  as.numeric(model_volatility_robust$coefficients[6]) * data_dummy$D6 +
+  as.numeric(model_volatility_robust$coefficients[7]) * data_dummy$D7 +
+  as.numeric(model_volatility_robust$coefficients[8]) * data_dummy$D8 +
+  as.numeric(model_volatility_robust$coefficients[9]) * data_dummy$D9 +
+  as.numeric(model_volatility_robust$coefficients[10]) * data_dummy$D10 +
+  as.numeric(model_volatility_robust$coefficients[11]) * data_dummy$D11 +
+  as.numeric(model_volatility_robust$coefficients[12]) * data_dummy$D12 +
+as.numeric(model_volatility_robust$coefficients[13]) * data_dummy$D13 +
+  as.numeric(model_volatility_robust$coefficients[14]) * data_dummy$D14 +
+  as.numeric(model_volatility_robust$coefficients[15]) * data_dummy$D15 +
+  as.numeric(model_volatility_robust$coefficients[16]) * data_dummy$D16 
 
 u_hat <- log(true_epsilon^2) - log_S_epsilon_squared
 
@@ -502,7 +502,7 @@ for (t in (n_train+1):nobs) {
 }
 
 sigma_star_squared <- rep(NA, nobs)
-sigma_star_squared[n_train]<-var(data_full$ReturnStandardized[1:n_train])
+sigma_star_squared[n_train]<-var(data_dummy$Return1[1:n_train])
 
 for (i in (n_train+1):nobs) {
   sigma_star_squared[i] <- coef(m2)["omega"] + coef(m2)["alpha1"] * (epsilon_star1[i-1])^2 + coef(m2)["beta1"] * sigma_star_squared[i-1]
