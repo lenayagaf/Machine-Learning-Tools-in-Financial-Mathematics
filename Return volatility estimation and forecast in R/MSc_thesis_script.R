@@ -461,7 +461,7 @@ S_t_r <- as.numeric(model_return_robust$coefficients[1]) * data$D1 +
   as.numeric(model_return_robust$coefficients[15]) * data$D15 +
   as.numeric(model_return_robust$coefficients[16]) * data$D16
 
-# Standardize EUR/GBP log-returns from test sample using mean and standard deviation of EUR/GBP log-returns from train sample
+# Standardize EUR/GBP 5-minute Log-Returns from test sample using mean and standard deviation of 5-minute EUR/GBP Log-Returns from train sample
 data$ReturnStandardized<-c(data_train$ReturnStandardized, (data$Return[(n_train+1):nobs]-mean(data_train$Return))/sd(data_train$Return))
 ReturnDeseasonalized <- data$ReturnStandardized - S_t_r
 
