@@ -300,8 +300,6 @@ kurtosis(epsilon_star)
 num<-seq(1, length(epsilon_star), 1)
 df <- as.data.frame(cbind(num, epsilon_star))
 
-# epsilon_star
-
 ggplot(df, aes(x=epsilon_star))+geom_density(color="red", linewidth = 1) +
   theme(axis.text=element_text(size=50), axis.title=element_text(size=50))+
   labs(y = "", x = "") + stat_function(fun = dged, args = list(mean = mean(df$epsilon_star), sd=sd(df$epsilon_star)), color="green", linewidth = 1) + 
