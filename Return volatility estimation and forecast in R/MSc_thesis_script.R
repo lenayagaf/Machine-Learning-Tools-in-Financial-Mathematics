@@ -21,7 +21,7 @@ library(fGarch)
 library(stats)
 
 # Read the data
-data<-fread("eur_gbp_active.csv")
+data <- fread("eur_gbp_active.csv")
 
 # Number of observations in the training set (70% of the data)
 n_train <- round(dim(data)[1]*0.7)
@@ -442,8 +442,6 @@ ggplot(df_volatility[l1:l2,], aes(x=index)) +
   theme(plot.title = element_text(size = 20)) +
   theme(axis.text=element_text(size=10)) + theme_classic() + theme(legend.text = element_text(size = 18))
 
-nobs <- dim(data)[1]
-
 S_t_r <- as.numeric(model_return_robust$coefficients[1]) * data$D1 +
   as.numeric(model_return_robust$coefficients[2]) * data$D2 +
   as.numeric(model_return_robust$coefficients[3]) * data$D3 +
@@ -461,6 +459,8 @@ S_t_r <- as.numeric(model_return_robust$coefficients[1]) * data$D1 +
   as.numeric(model_return_robust$coefficients[15]) * data$D15 +
   as.numeric(model_return_robust$coefficients[16]) * data$D16
 
+# Total number of observations in train and test samples
+nobs <- dim(data)[1]
 # Standardize EUR/GBP 5-minute Log-Returns from test sample using mean and standard deviation of 5-minute EUR/GBP Log-Returns from train sample
 data$ReturnStandardized<-c(data_train$ReturnStandardized, (data$Return[(n_train+1):nobs]-mean(data_train$Return))/sd(data_train$Return))
 ReturnDeseasonalized <- data$ReturnStandardized - S_t_r
