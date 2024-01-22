@@ -21,7 +21,7 @@ library(fGarch)
 library(stats)
 
 # Read the data
-data_dummy<-fread("eur_gbp_active.csv")
+data_dummy<-fread("eur_gbp_data.csv")
 
 # Number of observations in the training set (70% of the data)
 n_train <- round(dim(data_dummy)[1]*0.7)
@@ -447,7 +447,7 @@ ggplot(df_volatility[l1:l2,], aes(x=index)) +
 
 # Define number of predictions to make
 # Read the new data with deseasonalized and true volatility estimates 
-data_full<-fread("eur_gbp_data.csv")
+data_full<-fread("eur_gbp_data_with_volatility.csv")
 
 nobs <- dim(data_full)[1]
 
