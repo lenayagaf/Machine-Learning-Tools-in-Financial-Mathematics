@@ -2,8 +2,7 @@
 rm(list = ls())
 
 # Set the working directory
-#dir_data<-".MSc-Thesis/Return volatility estimation and forecast in R/"
-dir_data<-"/Users/user/Desktop/UCL/ThesisMSc/Rcode/"
+dir_data<-".MSc-Thesis/Return volatility estimation and forecast in R/"
 setwd(dir_data)
 
 # Load the required libraries
